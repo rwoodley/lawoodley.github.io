@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install && npm install @mui/material @emotion/react @emotion/styled @mui/icons-material)",
+      "Bash(npm install react react-dom && npm install -D @vitejs/plugin-react @types/react @types/react-dom)",
+      "Bash(npx tsc --noEmit 2>&1)",
+      "Bash(npm run build 2>&1)"
+    ]
+  }
+}
