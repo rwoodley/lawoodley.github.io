@@ -106,7 +106,7 @@ function Header({ onNav }: { onNav: (page: Page) => void }) {
                           alt=""
                           sx={{ width: 24, height: 24, borderRadius: '50%', mr: 1.5, flexShrink: 0, objectFit: 'cover' }}
                         />
-                        <ListItemText primary="Nrplign videos" />
+                        <ListItemText primary="Nrplign Videos" />
                       </ListItemButton>
                     </ListItem>
                   </List>
