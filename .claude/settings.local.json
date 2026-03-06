@@ -16,7 +16,8 @@
       "Bash(python3 << 'EOF'\nfrom PIL import Image\nimport numpy as np\n\nimg = Image.open\\('/Users/robertwoodley/code/lawoodley.github.io/public/tridents-keep.png'\\).convert\\('RGB'\\)\narr = np.array\\(img\\)\n\n# Crop to trident region with padding\npad = 20\ny1, y2 = 200 - pad, 535 + pad\nx1, x2 = 175 - pad, 295 + pad\nregion = arr[y1:y2, x1:x2].copy\\(\\)\n\nr = region[:,:,0].astype\\(float\\)\ng = region[:,:,1].astype\\(float\\)\nb = region[:,:,2].astype\\(float\\)\nlum = 0.299*r + 0.587*g + 0.114*b\n\n# Trident mask: dark body OR bright silver highlights\ntrident_mask = \\(lum < 44\\) | \\(lum > 95\\)\n\n# Dilate mask slightly using a simple max-pooling trick with numpy\nfrom numpy.lib.stride_tricks import sliding_window_view\npadded = np.pad\\(trident_mask, 2, mode='constant', constant_values=False\\)\ndilated = np.zeros_like\\(trident_mask\\)\nfor dy in range\\(5\\):\n    for dx in range\\(5\\):\n        dilated |= padded[dy:dy+trident_mask.shape[0], dx:dx+trident_mask.shape[1]]\n\n# Replace background \\(non-trident\\) with white\noutput = region.copy\\(\\)\noutput[~dilated] = [255, 255, 255]\n\n# Tighten crop to where mask has content\nrows = np.any\\(dilated, axis=1\\)\ncols = np.any\\(dilated, axis=0\\)\nrmin, rmax = np.where\\(rows\\)[0][[0, -1]]\ncmin, cmax = np.where\\(cols\\)[0][[0, -1]]\ntight = output[rmin:rmax+1, cmin:cmax+1]\n\nout_path = '/Users/robertwoodley/code/lawoodley.github.io/public/trident.jpg'\nImage.fromarray\\(tight\\).save\\(out_path, 'JPEG', quality=95\\)\nprint\\(f\"Saved: {tight.shape[1]}x{tight.shape[0]} px → {out_path}\"\\)\nEOF)",
       "Bash(gh run list --repo rwoodley/lawoodley.github.io --limit 5)",
       "WebFetch(domain:rwoodley.org)",
-      "Bash(curl -s https://rwoodley.org/lawoodley.github.io/ 2>&1 | head -20)"
+      "Bash(curl -s https://rwoodley.org/lawoodley.github.io/ 2>&1 | head -20)",
+      "Bash(npm uninstall gh-pages 2>&1 | tail -3)"
     ]
   }
 }
