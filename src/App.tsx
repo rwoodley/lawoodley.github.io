@@ -28,9 +28,9 @@ function TridentIcon() {
   )
 }
 
-const NAV_LINKS = ['Books', 'Art', 'News & Events', 'About']
+const NAV_LINKS = ['Books', 'Art', 'Scripts', 'About']
 
-type Page = 'home' | 'tridents-keep' | 'about'
+type Page = 'home' | 'tridents-keep' | 'about' | 'scripts'
 
 function Header({ onNav }: { onNav: (page: Page) => void }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -113,7 +113,7 @@ function Header({ onNav }: { onNav: (page: Page) => void }) {
                 </Box>
               ) : (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={() => text === 'About' ? handleNav('about') : setDrawerOpen(false)}>
+                  <ListItemButton onClick={() => text === 'About' ? handleNav('about') : text === 'Scripts' ? handleNav('scripts') : setDrawerOpen(false)}>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>
@@ -141,7 +141,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
       <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
         <Box
           component="img"
-          src="tridents-keep.png"
+          src="tridents-keep.jpg"
           alt="Trident's Keep by L. A. Woodley — book cover"
           sx={{
             width: '100%',
@@ -200,7 +200,7 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
             }}>
               <Box
                 component="img"
-                src="tridents-keep.png"
+                src="tridents-keep.jpg"
                 alt="Trident's Keep book cover"
                 sx={{ width: 160, borderRadius: 1, boxShadow: 3 }}
               />
@@ -348,6 +348,24 @@ function AboutPage({ onBack }: { onBack: () => void }) {
   )
 }
 
+function ScriptsPage({ onBack }: { onBack: () => void }) {
+  return (
+    <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
+      <Container maxWidth="md">
+        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
+          Back
+        </Button>
+        <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
+          Scripts
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Coming soon.
+        </Typography>
+      </Container>
+    </Box>
+  )
+}
+
 function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -368,6 +386,7 @@ export default function App() {
       {page === 'home' && <MainContent onNav={setPage} />}
       {page === 'tridents-keep' && <TridentsKeepPage onBack={() => setPage('home')} />}
       {page === 'about' && <AboutPage onBack={() => setPage('home')} />}
+      {page === 'scripts' && <ScriptsPage onBack={() => setPage('home')} />}
       <Footer />
     </Box>
   )
