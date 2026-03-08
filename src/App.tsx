@@ -162,12 +162,10 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
               right: 0,
               bottom: `${bottom}px`,
               height: '400px',
-              backgroundColor: WAVE_BG,
-              backgroundImage: 'url(wave.jpg)',
+              backgroundImage: 'url(wave.png)',
               backgroundRepeat: 'repeat-x',
               backgroundSize: '420px 400px',
               backgroundPosition: '0 bottom',
-              backgroundBlendMode: 'multiply',
               opacity,
               zIndex: waveRows.length - i,
             }}
