@@ -170,8 +170,8 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
               key={i}
               sx={{
                 position: 'absolute',
-                left: 0,
-                right: 0,
+                left: -42,
+                right: -42,
                 bottom: `${bottom}px`,
                 height: '200px',
                 backgroundImage: 'url(wave-outline.png), url(wave.png)',
@@ -194,7 +194,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         })}
       </Box>
 
-      <Box sx={{ position: 'relative', zIndex: 10, display: 'flex', gap: 3 }}>
+      <Box sx={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3 }}>
         {[
           { label: 'Books',   onClick: () => onNav('tridents-keep') },
           { label: 'Art',     onClick: undefined },
