@@ -11,11 +11,12 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Modal,
   Toolbar,
   Typography,
 } from '@mui/material'
 import { keyframes } from '@emotion/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function TridentIcon() {
   return (
@@ -31,7 +32,7 @@ function TridentIcon() {
 
 const NAV_LINKS = ['Books', 'Art', 'Scripts', 'About']
 
-type Page = 'home' | 'tridents-keep' | 'about' | 'scripts'
+type Page = 'home' | 'tridents-keep' | 'about' | 'scripts' | 'art'
 
 function Header({ onNav }: { onNav: (page: Page) => void }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -114,7 +115,7 @@ function Header({ onNav }: { onNav: (page: Page) => void }) {
                 </Box>
               ) : (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={() => text === 'About' ? handleNav('about') : text === 'Scripts' ? handleNav('scripts') : setDrawerOpen(false)}>
+                  <ListItemButton onClick={() => text === 'About' ? handleNav('about') : text === 'Scripts' ? handleNav('scripts') : text === 'Art' ? handleNav('art') : setDrawerOpen(false)}>
                     <ListItemText primary={text} />
                   </ListItemButton>
                 </ListItem>
@@ -197,7 +198,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
       <Box sx={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3 }}>
         {[
           { label: 'Books',   onClick: () => onNav('tridents-keep') },
-          { label: 'Art',     onClick: undefined },
+          { label: 'Art',     onClick: () => onNav('art') },
           { label: 'Scripts', onClick: () => onNav('scripts') },
         ].map(({ label, onClick }) => (
           <Button
@@ -232,9 +233,81 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
   )
 }
 
-const BOOK_SECTIONS = ['Overview', 'Bones', 'Richard', 'Camille']
+type PosterInfo = { src: string; text: string }
+
+function PosterModal({ poster, onClose }: { poster: PosterInfo | null; onClose: () => void }) {
+  return (
+    <Modal open={!!poster} onClose={onClose}>
+      <Box
+        onClick={onClose}
+        sx={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'rgba(0,0,0,0.85)',
+        }}
+      >
+        <Box
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            position: 'relative',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            component="img"
+            src={poster?.src}
+            onClick={onClose}
+            sx={{
+              maxWidth: '100%',
+              maxHeight: '75vh',
+              objectFit: 'contain',
+              borderRadius: 2,
+              display: 'block',
+              cursor: 'pointer',
+            }}
+          />
+          {poster?.text && (
+            <Box
+              sx={{
+                mt: 2,
+                px: 2,
+                py: 1,
+                bgcolor: 'rgba(0,0,0,0.6)',
+                borderRadius: 1,
+                maxWidth: 600,
+              }}
+            >
+              <Typography variant="body2" color="white" sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+                {poster.text}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </Modal>
+  )
+}
 
 function TridentsKeepPage({ onBack }: { onBack: () => void }) {
+  const [texts, setTexts] = useState<Record<string, string>>({})
+  const [expandedPoster, setExpandedPoster] = useState<PosterInfo | null>(null)
+
+  useEffect(() => {
+    const base = import.meta.env.BASE_URL
+    const files = ['Bones', 'Richard', 'Camila', 'Fred', 'Korbalg', 'Piper', 'Riyah', 'Smashfist']
+    files.forEach((name) => {
+      fetch(`${base}${name}.txt`)
+        .then((r) => r.text())
+        .then((t) => setTexts((prev) => ({ ...prev, [name]: t.trim() })))
+    })
+  }, [])
 
   return (
     <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
@@ -253,8 +326,8 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
             </Typography>
           </Box>
 
-          {/* Three-column row */}
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'stretch', height: { md: 480 } }}>
+          {/* Two-column row */}
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'stretch' }}>
 
             {/* Left: thumbnail */}
             <Box sx={{
@@ -275,71 +348,42 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
               />
             </Box>
 
-            {/* Middle: section navigation */}
-            <Box sx={{
-              borderRight: { md: '1px solid' },
-              borderBottom: { xs: '1px solid', md: 'none' },
-              borderColor: 'divider',
-              flexShrink: 0,
-            }}>
-              <List disablePadding>
-                {BOOK_SECTIONS.map((section) => (
-                  <ListItem key={section} disablePadding>
-                    <ListItemButton
-                      onClick={() => document.getElementById(`section-${section}`)?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                      <ListItemText primary={section} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-
-            {/* Right: scrollable content */}
-            <Box sx={{ p: 3, flexGrow: 1, overflowY: { md: 'auto' }, height: { md: '100%' }, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {/* Right: content */}
+            <Box sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
               <Box id="section-Overview">
                 <Typography variant="body1">
                   Trident's Keep is a fantasy adventure following a group of people on a quest for a super-powered trident.
                 </Typography>
               </Box>
-              <Box id="section-Bones">
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-                  <Box component="img" src="01.jpg" alt="Bones" sx={{ width: 120, borderRadius: 1, flexShrink: 0 }} />
-                  <Box>
-                    <Typography variant="body1" paragraph>
-                      Bones is a living skeleton, 101 years old, who was ressurected long ago after he died in a burning volcano.
-                    </Typography>
-                    <Typography variant="body1">
-                      A fierce fighter, Bones has the agility of a 30 year old with the wisdom of a century. He's confident, smart, and wields a magic flaming yoyo that is definetly not a children's toy.
-                    </Typography>
+              {[
+                { id: 'Bones',     src: 'Bones_Poster.jpeg',     textKey: 'Bones' },
+                { id: 'Richard',   src: 'Richard_Poster.jpeg',   textKey: 'Richard' },
+                { id: 'Camille',   src: 'Camila_Poster.jpeg',    textKey: 'Camila' },
+                { id: 'Fred',      src: 'Fred_Poster.jpeg',      textKey: 'Fred' },
+                { id: 'Korbalg',   src: 'Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
+                { id: 'Piper',     src: 'Piper_Poster.jpeg',     textKey: 'Piper' },
+                { id: 'Riyah',     src: 'Riyah_Poster.jpeg',     textKey: 'Riyah' },
+                { id: 'Smashfist', src: 'Smashfist_Poster.jpeg', textKey: 'Smashfist' },
+              ].map(({ id, src, textKey }) => (
+                <Box key={id} id={`section-${id}`}>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                    <Box
+                      component="img"
+                      src={src}
+                      alt={id}
+                      onClick={() => setExpandedPoster({ src, text: texts[textKey] ?? '' })}
+                      sx={{ width: 120, borderRadius: 1, flexShrink: 0, cursor: 'pointer', '&:hover': { opacity: 0.85 } }}
+                    />
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{texts[textKey]}</Typography>
                   </Box>
                 </Box>
-              </Box>
-              <Box id="section-Richard">
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-                  <Box component="img" src="02.png" alt="Richard" sx={{ width: 120, borderRadius: 1, flexShrink: 0 }} />
-                  <Box>
-                    <Typography variant="body1">
-                      Hailing from the small town of Nokford, Richard is everything your classic warrior is not. Timid, meager, and built like a scarecrow, surely this cannot be the unlikely hero who finds the Ancient Trident.
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <Box id="section-Camille">
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-                  <Box component="img" src="03.jpg" alt="Camille" sx={{ width: 120, borderRadius: 1, flexShrink: 0 }} />
-                  <Box>
-                    <Typography variant="body1">
-                      Probably the only sane person on the quest for the trident, Camila is the voice of reason in a crew of chattering hobgoblins, raucous pirates, and zealous skeletons. It's a miracle she doesn't have a nervous breakdown by the end, or maybe she does…
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
+              ))}
             </Box>
 
           </Box>
         </Box>
       </Container>
+      <PosterModal poster={expandedPoster} onClose={() => setExpandedPoster(null)} />
     </Box>
   )
 }
@@ -417,6 +461,24 @@ function AboutPage({ onBack }: { onBack: () => void }) {
   )
 }
 
+function ArtPage({ onBack }: { onBack: () => void }) {
+  return (
+    <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
+      <Container maxWidth="md">
+        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
+          Back
+        </Button>
+        <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
+          Art
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Coming soon.
+        </Typography>
+      </Container>
+    </Box>
+  )
+}
+
 function ScriptsPage({ onBack }: { onBack: () => void }) {
   return (
     <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
@@ -456,6 +518,7 @@ export default function App() {
       {page === 'tridents-keep' && <TridentsKeepPage onBack={() => setPage('home')} />}
       {page === 'about' && <AboutPage onBack={() => setPage('home')} />}
       {page === 'scripts' && <ScriptsPage onBack={() => setPage('home')} />}
+      {page === 'art' && <ArtPage onBack={() => setPage('home')} />}
       <Footer />
     </Box>
   )
