@@ -163,6 +163,8 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
     >
       {/* Wave background layers */}
       <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {/* White overlay to fade waves */}
+        <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(255,255,255,0.6)', zIndex: 6 }} />
         {waveRows.map((bottom, i) => {
           const t = i / (waveRows.length - 1)
           const brightness = 1.15 - t * 0.36
@@ -480,6 +482,15 @@ function ArtPage({ onBack }: { onBack: () => void }) {
 }
 
 function ScriptsPage({ onBack }: { onBack: () => void }) {
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://substack.com/embedjs/embed.js'
+    script.async = true
+    script.charset = 'utf-8'
+    document.body.appendChild(script)
+    return () => { document.body.removeChild(script) }
+  }, [])
+
   return (
     <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
       <Container maxWidth="md">
@@ -489,9 +500,13 @@ function ScriptsPage({ onBack }: { onBack: () => void }) {
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
           Scripts
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Coming soon.
-        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className="substack-post-embed">
+            <p lang="en">Roses From My Father by Robert Woodley</p>
+            <p>Inez Woodley, 1970</p>
+            <a data-post-link href="https://woodleyinez.substack.com/p/roses-from-my-father">Read on Substack</a>
+          </div>
+        </Box>
       </Container>
     </Box>
   )
