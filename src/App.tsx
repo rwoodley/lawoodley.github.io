@@ -126,7 +126,17 @@ function Header({ onNav }: { onNav: (page: Page) => void }) {
   )
 }
 
+const WAVE_BG = '#4d6b82'
+
 function MainContent({ onNav }: { onNav: (page: Page) => void }) {
+  const waveRows = [
+    { bottom: 0,   opacity: 0.80 },
+    { bottom: 200, opacity: 0.62 },
+    { bottom: 400, opacity: 0.44 },
+    { bottom: 600, opacity: 0.28 },
+    { bottom: 800, opacity: 0.14 },
+  ]
+
   return (
     <Box
       component="main"
@@ -136,29 +146,35 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         alignItems: 'center',
         justifyContent: 'center',
         py: 8,
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: WAVE_BG,
       }}
     >
-      <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
-        <Box
-          component="img"
-          src="tridents-keep.jpg"
-          alt="Trident's Keep by L. A. Woodley — book cover"
-          sx={{
-            width: '100%',
-            maxWidth: 400,
-            borderRadius: 2,
-            boxShadow: 6,
-          }}
-        />
-        <Button
-          variant="contained"
-          size="large"
-          onClick={() => onNav('tridents-keep')}
-          sx={{ mt: 3 }}
-        >
-          Explore the Book!
-        </Button>
-      </Container>
+      {/* Wave background layers */}
+      <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {waveRows.map(({ bottom, opacity }, i) => (
+          <Box
+            key={i}
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: `${bottom}px`,
+              height: '400px',
+              backgroundColor: WAVE_BG,
+              backgroundImage: 'url(wave.jpg)',
+              backgroundRepeat: 'repeat-x',
+              backgroundSize: '420px 400px',
+              backgroundPosition: '0 bottom',
+              backgroundBlendMode: 'multiply',
+              opacity,
+              zIndex: waveRows.length - i,
+            }}
+          />
+        ))}
+      </Box>
+
     </Box>
   )
 }
