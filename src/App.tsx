@@ -261,6 +261,16 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
   onPrev: () => void
   onNext: () => void
 }) {
+  useEffect(() => {
+    if (!poster) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') onPrev()
+      else if (e.key === 'ArrowRight') onNext()
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [poster, onPrev, onNext])
+
   return (
     <Modal open={!!poster} onClose={onClose}>
       <Box
