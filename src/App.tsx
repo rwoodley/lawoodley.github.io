@@ -298,6 +298,7 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
             position: 'relative',
             maxWidth: '90vw',
             maxHeight: '90vh',
+            overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
