@@ -347,26 +347,35 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
 }
 
 const CHARACTERS = [
-  { id: 'Bones',     src: 'Bones_Poster.jpeg',     textKey: 'Bones' },
-  { id: 'Richard',   src: 'Richard_Poster.jpeg',   textKey: 'Richard' },
-  { id: 'Camille',   src: 'Camila_Poster.jpeg',    textKey: 'Camila' },
-  { id: 'Fred',      src: 'Fred_Poster.jpeg',      textKey: 'Fred' },
-  { id: 'Korbalg',   src: 'Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
-  { id: 'Piper',     src: 'Piper_Poster.jpeg',     textKey: 'Piper' },
-  { id: 'Riyah',     src: 'Riyah_Poster.jpeg',     textKey: 'Riyah' },
-  { id: 'Smashfist', src: 'Smashfist_Poster.jpeg', textKey: 'Smashfist' },
+  { id: 'Bones',     src: 'characters/Bones_Poster.jpeg',     textKey: 'Bones' },
+  { id: 'Richard',   src: 'characters/Richard_Poster.jpeg',   textKey: 'Richard' },
+  { id: 'Camille',   src: 'characters/Camila_Poster.jpeg',    textKey: 'Camila' },
+  { id: 'Fred',      src: 'characters/Fred_Poster.jpeg',      textKey: 'Fred' },
+  { id: 'Korbalg',   src: 'characters/Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
+  { id: 'Piper',     src: 'characters/Piper_Poster.jpeg',     textKey: 'Piper' },
+  { id: 'Riyah',     src: 'characters/Riyah_Poster.jpeg',     textKey: 'Riyah' },
+  { id: 'Smashfist', src: 'characters/Smashfist_Poster.jpeg', textKey: 'Smashfist' },
+]
+
+const WORLD = [
+  { id: 'Main',       src: 'world/Main.jpeg',       textKey: 'World_Main' },
+  { id: 'Geography',  src: 'world/Geography.jpeg',  textKey: 'World_Geography' },
+  { id: 'Political',  src: 'world/Political.jpeg',  textKey: 'World_Political' },
 ]
 
 function TridentsKeepPage({ onBack }: { onBack: () => void }) {
   const [texts, setTexts] = useState<Record<string, string>>({})
+  const [expandedList, setExpandedList] = useState<typeof CHARACTERS | null>(null)
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('tridents-keep-tab') ?? 'Overview')
 
-  const expandedPoster = expandedIndex !== null
-    ? { src: CHARACTERS[expandedIndex].src, text: texts[CHARACTERS[expandedIndex].textKey] ?? '' }
+  const expandedPoster = expandedList !== null && expandedIndex !== null
+    ? { src: expandedList[expandedIndex].src, text: texts[expandedList[expandedIndex].textKey] ?? '' }
     : null
-  const handlePrev = () => setExpandedIndex(i => i !== null ? (i - 1 + CHARACTERS.length) % CHARACTERS.length : null)
-  const handleNext = () => setExpandedIndex(i => i !== null ? (i + 1) % CHARACTERS.length : null)
+  const handlePrev = () => setExpandedIndex(i => i !== null && expandedList ? (i - 1 + expandedList.length) % expandedList.length : null)
+  const handleNext = () => setExpandedIndex(i => i !== null && expandedList ? (i + 1) % expandedList.length : null)
+  const openPoster = (list: typeof CHARACTERS, index: number) => { setExpandedList(list); setExpandedIndex(index) }
+  const closePoster = () => { setExpandedList(null); setExpandedIndex(null) }
 
   const handleTabChange = (label: string) => {
     setActiveTab(label)
@@ -375,11 +384,17 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL
-    const files = ['Bones', 'Richard', 'Camila', 'Fred', 'Korbalg', 'Piper', 'Riyah', 'Smashfist']
-    files.forEach((name) => {
-      fetch(`${base}${name}.txt`)
+    const charFiles = ['Bones', 'Richard', 'Camila', 'Fred', 'Korbalg', 'Piper', 'Riyah', 'Smashfist']
+    charFiles.forEach((name) => {
+      fetch(`${base}characters/${name}.txt`)
         .then((r) => r.text())
         .then((t) => setTexts((prev) => ({ ...prev, [name]: t.trim() })))
+    })
+    const worldFiles = ['Main', 'Geography', 'Political']
+    worldFiles.forEach((name) => {
+      fetch(`${base}world/${name}.txt`)
+        .then((r) => r.text())
+        .then((t) => setTexts((prev) => ({ ...prev, [`World_${name}`]: t.trim() })))
     })
   }, [])
 
@@ -462,7 +477,21 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
                       component="img"
                       src={src}
                       alt={id}
-                      onClick={() => setExpandedIndex(index)}
+                      onClick={() => openPoster(CHARACTERS, index)}
+                      sx={{ width: 120, borderRadius: 1, flexShrink: 0, cursor: 'pointer', '&:hover': { opacity: 0.85 } }}
+                    />
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{texts[textKey]}</Typography>
+                  </Box>
+                </Box>
+              ))}
+              {activeTab === 'World' && WORLD.map(({ id, src, textKey }, index) => (
+                <Box key={id}>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                    <Box
+                      component="img"
+                      src={src}
+                      alt={id}
+                      onClick={() => openPoster(WORLD, index)}
                       sx={{ width: 120, borderRadius: 1, flexShrink: 0, cursor: 'pointer', '&:hover': { opacity: 0.85 } }}
                     />
                     <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{texts[textKey]}</Typography>
@@ -475,7 +504,7 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
           </Box>
         </Box>
       </Container>
-      <PosterModal poster={expandedPoster} onClose={() => setExpandedIndex(null)} onPrev={handlePrev} onNext={handleNext} />
+      <PosterModal poster={expandedPoster} onClose={closePoster} onPrev={handlePrev} onNext={handleNext} />
     </Box>
   )
 }
