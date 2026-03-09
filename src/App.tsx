@@ -159,7 +159,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         position: 'relative',
         overflowX: 'hidden',
         overflowY: 'auto',
-        backgroundColor: WAVE_BG,
+        background: `linear-gradient(to bottom, #3c5568 50%, ${WAVE_BG} 50%)`,
       }}
     >
       {/* Wave background layers */}
