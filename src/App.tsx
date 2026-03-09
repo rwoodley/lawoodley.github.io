@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
@@ -15,7 +16,6 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import { keyframes } from '@emotion/react'
 import { useEffect, useState } from 'react'
 
 function TridentIcon() {
@@ -128,7 +128,7 @@ function Header({ onNav }: { onNav: (page: Page) => void }) {
   )
 }
 
-const WAVE_BG = '#3c5568'
+const WAVE_BG = 'rgb(171, 175, 182)'
 
 const waveShift = keyframes`
   0%, 100% { transform: translateX(0); }
@@ -157,7 +157,8 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         justifyContent: 'center',
         py: 8,
         position: 'relative',
-        overflow: 'hidden',
+        overflowX: 'hidden',
+        overflowY: 'auto',
         backgroundColor: WAVE_BG,
       }}
     >
