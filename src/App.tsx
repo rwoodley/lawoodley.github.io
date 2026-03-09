@@ -198,9 +198,14 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
       </Box>
 
       <Box sx={{ position: 'absolute', zIndex: 10, top: '10%', left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-        <Typography sx={{ fontSize: '9vw', fontWeight: 600, color: 'rgb(238, 187, 39)', textAlign: 'center' }}>
-          Louis A. Woodley
-        </Typography>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <Typography sx={{ position: 'absolute', top: '0.08em', left: '0.08em', fontSize: '9vw', fontWeight: 600, color: 'rgb(209, 116, 30)', textAlign: 'center', whiteSpace: 'nowrap', userSelect: 'none' }}>
+            Louis A. Woodley
+          </Typography>
+          <Typography sx={{ position: 'relative', fontSize: '9vw', fontWeight: 600, color: 'rgb(238, 187, 39)', textAlign: 'center', whiteSpace: 'nowrap' }}>
+            Louis A. Woodley
+          </Typography>
+        </Box>
         <Typography sx={{ fontSize: '1.5rem', color: 'rgb(130, 78, 24)', textAlign: 'center', maxWidth: '75%' }}>
           Louis Woodley is a self-published author, screenwriting, and artist studying Writing for Screen and Television at USC's School of Cinematic Arts. Check out work samples below!
         </Typography>
