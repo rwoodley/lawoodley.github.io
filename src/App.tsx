@@ -347,20 +347,20 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
 }
 
 const CHARACTERS = [
-  { id: 'Bones',     src: 'characters/Bones_Poster.jpeg',     textKey: 'Bones' },
-  { id: 'Richard',   src: 'characters/Richard_Poster.jpeg',   textKey: 'Richard' },
-  { id: 'Camille',   src: 'characters/Camila_Poster.jpeg',    textKey: 'Camila' },
-  { id: 'Fred',      src: 'characters/Fred_Poster.jpeg',      textKey: 'Fred' },
-  { id: 'Korbalg',   src: 'characters/Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
-  { id: 'Piper',     src: 'characters/Piper_Poster.jpeg',     textKey: 'Piper' },
-  { id: 'Riyah',     src: 'characters/Riyah_Poster.jpeg',     textKey: 'Riyah' },
-  { id: 'Smashfist', src: 'characters/Smashfist_Poster.jpeg', textKey: 'Smashfist' },
+  { id: 'Bones',     src: 'TridentsKeep/characters/Bones_Poster.jpeg',     textKey: 'Bones' },
+  { id: 'Richard',   src: 'TridentsKeep/characters/Richard_Poster.jpeg',   textKey: 'Richard' },
+  { id: 'Camille',   src: 'TridentsKeep/characters/Camila_Poster.jpeg',    textKey: 'Camila' },
+  { id: 'Fred',      src: 'TridentsKeep/characters/Fred_Poster.jpeg',      textKey: 'Fred' },
+  { id: 'Korbalg',   src: 'TridentsKeep/characters/Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
+  { id: 'Piper',     src: 'TridentsKeep/characters/Piper_Poster.jpeg',     textKey: 'Piper' },
+  { id: 'Riyah',     src: 'TridentsKeep/characters/Riyah_Poster.jpeg',     textKey: 'Riyah' },
+  { id: 'Smashfist', src: 'TridentsKeep/characters/Smashfist_Poster.jpeg', textKey: 'Smashfist' },
 ]
 
 const WORLD = [
-  { id: 'Main',       src: 'world/Main.jpeg',       textKey: 'World_Main' },
-  { id: 'Geography',  src: 'world/Geography.jpeg',  textKey: 'World_Geography' },
-  { id: 'Political',  src: 'world/Political.jpeg',  textKey: 'World_Political' },
+  { id: 'Main',       src: 'TridentsKeep/world/Main.jpeg',       textKey: 'World_Main' },
+  { id: 'Geography',  src: 'TridentsKeep/world/Geography.jpeg',  textKey: 'World_Geography' },
+  { id: 'Political',  src: 'TridentsKeep/world/Political.jpeg',  textKey: 'World_Political' },
 ]
 
 function TridentsKeepPage({ onBack }: { onBack: () => void }) {
@@ -386,13 +386,13 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
     const base = import.meta.env.BASE_URL
     const charFiles = ['Bones', 'Richard', 'Camila', 'Fred', 'Korbalg', 'Piper', 'Riyah', 'Smashfist']
     charFiles.forEach((name) => {
-      fetch(`${base}characters/${name}.txt`)
+      fetch(`${base}TridentsKeep/characters/${name}.txt`)
         .then((r) => r.text())
         .then((t) => setTexts((prev) => ({ ...prev, [name]: t.trim() })))
     })
     const worldFiles = ['Main', 'Geography', 'Political']
     worldFiles.forEach((name) => {
-      fetch(`${base}world/${name}.txt`)
+      fetch(`${base}TridentsKeep/world/${name}.txt`)
         .then((r) => r.text())
         .then((t) => setTexts((prev) => ({ ...prev, [`World_${name}`]: t.trim() })))
     })
@@ -608,15 +608,6 @@ function ArtPage({ onBack }: { onBack: () => void }) {
 }
 
 function ScriptsPage({ onBack }: { onBack: () => void }) {
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://substack.com/embedjs/embed.js'
-    script.async = true
-    script.charset = 'utf-8'
-    document.body.appendChild(script)
-    return () => { document.body.removeChild(script) }
-  }, [])
-
   return (
     <Box component="main" sx={{ flexGrow: 1, py: 8, bgcolor: 'rgb(239, 218, 134)' }}>
       <Container maxWidth="md">
@@ -626,13 +617,9 @@ function ScriptsPage({ onBack }: { onBack: () => void }) {
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700} sx={{ color: 'rgb(205, 79, 65)' }}>
           Screenplays
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <div className="substack-post-embed">
-            <p lang="en">Roses From My Father by Robert Woodley</p>
-            <p>Inez Woodley, 1970</p>
-            <a data-post-link href="https://woodleyinez.substack.com/p/roses-from-my-father">Read on Substack</a>
-          </div>
-        </Box>
+        <Typography variant="body1" color="text.secondary">
+          Coming soon.
+        </Typography>
       </Container>
     </Box>
   )
