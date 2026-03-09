@@ -253,7 +253,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
   )
 }
 
-type PosterInfo = { src: string; text: string }
+type PosterInfo = { src: string; text: string; title?: string }
 
 function PosterModal({ poster, onClose, onPrev, onNext }: {
   poster: PosterInfo | null
@@ -317,7 +317,7 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
               cursor: 'pointer',
             }}
           />
-          {poster?.text && (
+          {(poster?.title || poster?.text) && (
             <Box
               sx={{
                 mt: 2,
@@ -328,9 +328,16 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
                 maxWidth: 600,
               }}
             >
-              <Typography variant="body2" color="white" sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
-                {poster.text}
-              </Typography>
+              {poster.title && (
+                <Typography variant="h6" color="white" sx={{ textAlign: 'center', fontWeight: 700, mb: 0.5 }}>
+                  {poster.title}
+                </Typography>
+              )}
+              {poster.text && (
+                <Typography variant="body2" color="white" sx={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+                  {poster.text}
+                </Typography>
+              )}
             </Box>
           )}
         </Box>
@@ -611,7 +618,7 @@ function ArtPage({ onBack }: { onBack: () => void }) {
   }, [])
 
   const expandedPoster = expandedIndex !== null
-    ? { src: `nrpligns/${NRPLIGNS[expandedIndex]}.png`, text: texts[NRPLIGNS[expandedIndex]] ?? '' }
+    ? { src: `nrpligns/${NRPLIGNS[expandedIndex]}.png`, text: texts[NRPLIGNS[expandedIndex]] ?? '', title: NRPLIGNS[expandedIndex] }
     : null
   const handlePrev = () => setExpandedIndex(i => i !== null ? (i - 1 + NRPLIGNS.length) % NRPLIGNS.length : null)
   const handleNext = () => setExpandedIndex(i => i !== null ? (i + 1) % NRPLIGNS.length : null)
@@ -624,6 +631,12 @@ function ArtPage({ onBack }: { onBack: () => void }) {
         </Button>
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
           Art
+        </Typography>
+        <Typography variant="h5" fontWeight={700} sx={{ mt: 2, mb: 1 }}>
+          The Nrpligns
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          Starting when I was five years old, I began creating these fictional animals — the Nrpligns. Over the years, each creature grew its own identity, habitat, and role in a wider ecosystem. The project eventually became the basis for a TikTok series exploring themes of biology, ecology, and the natural world through imaginative creature design.
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1 }}>
           {NRPLIGNS.map((name, index) => (
