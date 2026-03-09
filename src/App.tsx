@@ -606,7 +606,7 @@ function ArtPage({ onBack }: { onBack: () => void }) {
   const handleNext = () => setExpandedIndex(i => i !== null ? (i + 1) % NRPLIGNS.length : null)
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
+    <Box component="main" sx={{ flexGrow: 1, py: 8, bgcolor: 'rgb(92, 109, 92)' }}>
       <Container maxWidth="md">
         <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
           Back
