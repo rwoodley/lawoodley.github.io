@@ -1,5 +1,6 @@
 import { keyframes } from '@emotion/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar,
@@ -254,7 +255,12 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
 
 type PosterInfo = { src: string; text: string }
 
-function PosterModal({ poster, onClose }: { poster: PosterInfo | null; onClose: () => void }) {
+function PosterModal({ poster, onClose, onPrev, onNext }: {
+  poster: PosterInfo | null
+  onClose: () => void
+  onPrev: () => void
+  onNext: () => void
+}) {
   return (
     <Modal open={!!poster} onClose={onClose}>
       <Box
@@ -268,6 +274,14 @@ function PosterModal({ poster, onClose }: { poster: PosterInfo | null; onClose: 
           bgcolor: 'rgba(0,0,0,0.85)',
         }}
       >
+        {/* Prev arrow */}
+        <IconButton
+          onClick={(e) => { e.stopPropagation(); onPrev() }}
+          sx={{ position: 'fixed', left: 16, color: 'white', bgcolor: 'rgba(0,0,0,0.4)', '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' } }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+
         <Box
           onClick={(e) => e.stopPropagation()}
           sx={{
@@ -309,15 +323,40 @@ function PosterModal({ poster, onClose }: { poster: PosterInfo | null; onClose: 
             </Box>
           )}
         </Box>
+
+        {/* Next arrow */}
+        <IconButton
+          onClick={(e) => { e.stopPropagation(); onNext() }}
+          sx={{ position: 'fixed', right: 16, color: 'white', bgcolor: 'rgba(0,0,0,0.4)', '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' } }}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
       </Box>
     </Modal>
   )
 }
 
+const CHARACTERS = [
+  { id: 'Bones',     src: 'Bones_Poster.jpeg',     textKey: 'Bones' },
+  { id: 'Richard',   src: 'Richard_Poster.jpeg',   textKey: 'Richard' },
+  { id: 'Camille',   src: 'Camila_Poster.jpeg',    textKey: 'Camila' },
+  { id: 'Fred',      src: 'Fred_Poster.jpeg',      textKey: 'Fred' },
+  { id: 'Korbalg',   src: 'Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
+  { id: 'Piper',     src: 'Piper_Poster.jpeg',     textKey: 'Piper' },
+  { id: 'Riyah',     src: 'Riyah_Poster.jpeg',     textKey: 'Riyah' },
+  { id: 'Smashfist', src: 'Smashfist_Poster.jpeg', textKey: 'Smashfist' },
+]
+
 function TridentsKeepPage({ onBack }: { onBack: () => void }) {
   const [texts, setTexts] = useState<Record<string, string>>({})
-  const [expandedPoster, setExpandedPoster] = useState<PosterInfo | null>(null)
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('tridents-keep-tab') ?? 'Overview')
+
+  const expandedPoster = expandedIndex !== null
+    ? { src: CHARACTERS[expandedIndex].src, text: texts[CHARACTERS[expandedIndex].textKey] ?? '' }
+    : null
+  const handlePrev = () => setExpandedIndex(i => i !== null ? (i - 1 + CHARACTERS.length) % CHARACTERS.length : null)
+  const handleNext = () => setExpandedIndex(i => i !== null ? (i + 1) % CHARACTERS.length : null)
 
   const handleTabChange = (label: string) => {
     setActiveTab(label)
@@ -406,23 +445,14 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
                   Trident's Keep is a fantasy adventure following a group of people on a quest for a super-powered trident.
                 </Typography>
               )}
-              {activeTab === 'Characters' && [
-                { id: 'Bones',     src: 'Bones_Poster.jpeg',     textKey: 'Bones' },
-                { id: 'Richard',   src: 'Richard_Poster.jpeg',   textKey: 'Richard' },
-                { id: 'Camille',   src: 'Camila_Poster.jpeg',    textKey: 'Camila' },
-                { id: 'Fred',      src: 'Fred_Poster.jpeg',      textKey: 'Fred' },
-                { id: 'Korbalg',   src: 'Korbalg_Poster.jpeg',   textKey: 'Korbalg' },
-                { id: 'Piper',     src: 'Piper_Poster.jpeg',     textKey: 'Piper' },
-                { id: 'Riyah',     src: 'Riyah_Poster.jpeg',     textKey: 'Riyah' },
-                { id: 'Smashfist', src: 'Smashfist_Poster.jpeg', textKey: 'Smashfist' },
-              ].map(({ id, src, textKey }) => (
-                <Box key={id} id={`section-${id}`}>
+              {activeTab === 'Characters' && CHARACTERS.map(({ id, src, textKey }, index) => (
+                <Box key={id}>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
                     <Box
                       component="img"
                       src={src}
                       alt={id}
-                      onClick={() => setExpandedPoster({ src, text: texts[textKey] ?? '' })}
+                      onClick={() => setExpandedIndex(index)}
                       sx={{ width: 120, borderRadius: 1, flexShrink: 0, cursor: 'pointer', '&:hover': { opacity: 0.85 } }}
                     />
                     <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{texts[textKey]}</Typography>
@@ -435,7 +465,7 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
           </Box>
         </Box>
       </Container>
-      <PosterModal poster={expandedPoster} onClose={() => setExpandedPoster(null)} />
+      <PosterModal poster={expandedPoster} onClose={() => setExpandedIndex(null)} onPrev={handlePrev} onNext={handleNext} />
     </Box>
   )
 }
