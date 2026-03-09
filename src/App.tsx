@@ -197,6 +197,9 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         })}
       </Box>
 
+      <Typography sx={{ position: 'absolute', zIndex: 10, top: '10%', left: 0, right: 0, fontSize: '9vw', fontWeight: 600, color: 'rgb(238, 187, 39)', textAlign: 'center' }}>
+        Louis A. Woodley
+      </Typography>
       <Box sx={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3 }}>
         {[
           { label: 'Books',   onClick: () => onNav('tridents-keep') },
@@ -208,9 +211,9 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
             variant="outlined"
             onClick={onClick}
             sx={{
-              color: '#e0c25c',
-              borderColor: '#e0c25c',
-              backgroundColor: '#374d5e',
+              color: 'rgb(238, 187, 39)',
+              borderColor: 'rgb(238, 187, 39)',
+              backgroundColor: 'rgb(51, 82, 133)',
               boxShadow: 'none',
               textTransform: 'none',
               fontSize: '1.5rem',
@@ -220,8 +223,8 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
               px: 5,
               py: 1.5,
               '&:hover': {
-                backgroundColor: '#2d3f4d',
-                borderColor: '#e0c25c',
+                backgroundColor: 'rgb(38, 61, 100)',
+                borderColor: 'rgb(238, 187, 39)',
                 boxShadow: 'none',
               },
             }}
