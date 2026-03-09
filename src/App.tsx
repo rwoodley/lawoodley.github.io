@@ -210,7 +210,7 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
             Louis A. Woodley
           </Typography>
         </Box>
-        <Typography sx={{ fontSize: '1.5rem', color: 'rgb(130, 78, 24)', textAlign: 'center', maxWidth: '75%' }}>
+        <Typography sx={{ fontSize: '1.5rem', color: 'rgb(230, 78, 24)', textAlign: 'center', maxWidth: '75%' }}>
           Louis Woodley is a self-published author, screenwriting, and artist studying Writing for Screen and Television at USC's School of Cinematic Arts. Check out work samples below!
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3 }}>
@@ -386,7 +386,7 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
                       borderColor: 'divider',
                       '&:last-child': { borderRight: 'none' },
                     }}
-                  >
+ww                  >
                     {label}
                   </Button>
                 ))}
