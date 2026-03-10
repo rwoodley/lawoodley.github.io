@@ -407,11 +407,9 @@ function TridentsKeepPage({ onBack }: { onBack: () => void }) {
   }, [])
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, py: 8, bgcolor: 'rgb(174, 203, 216)' }}>
+    <Box component="main" sx={{ flexGrow: 1, pt: 2, pb: 8, bgcolor: 'rgb(174, 203, 216)' }}>
       <Container maxWidth="md">
-        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
-          Back
-        </Button>
+        <IconButton onClick={onBack} sx={{ mb: 2 }} aria-label="Back"><ArrowBackIcon /></IconButton>
 
         {/* Bordered table layout */}
         <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, bgcolor: 'white' }}>
@@ -528,9 +526,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
       <Container maxWidth="md">
-        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
-          Back
-        </Button>
+        <IconButton onClick={onBack} sx={{ mb: 2 }} aria-label="Back"><ArrowBackIcon /></IconButton>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 6, alignItems: 'flex-start' }}>
           <Box
             component="img"
@@ -624,19 +620,17 @@ function ArtPage({ onBack }: { onBack: () => void }) {
   const handleNext = () => setExpandedIndex(i => i !== null ? (i + 1) % NRPLIGNS.length : null)
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, py: 8, bgcolor: 'rgb(92, 109, 92)' }}>
+    <Box component="main" sx={{ flexGrow: 1, pt: 2, pb: 8, bgcolor: 'rgb(92, 109, 92)' }}>
       <Container maxWidth="md">
-        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
-          Back
-        </Button>
+        <IconButton onClick={onBack} sx={{ mb: 2 }} aria-label="Back"><ArrowBackIcon /></IconButton>
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
           Art
         </Typography>
         <Typography variant="h5" fontWeight={700} sx={{ mt: 2, mb: 1 }}>
-          The Nrpligns
+          The Nrplings
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Starting when I was five years old, I began creating these fictional animals — the Nrpligns. Over the years, each creature grew its own identity, habitat, and role in a wider ecosystem. The project eventually became the basis for a TikTok series exploring themes of biology, ecology, and the natural world through imaginative creature design.
+          Starting when I was five years old, I began creating these fictional animals — the Nrplings. Over the years, each creature grew its own identity, habitat, and role in a wider ecosystem. The project eventually became the basis for a TikTok series exploring themes of biology, ecology, and the natural world through imaginative creature design.
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1 }}>
           {NRPLIGNS.map((name, index) => (
@@ -663,11 +657,9 @@ function ArtPage({ onBack }: { onBack: () => void }) {
 
 function ScriptsPage({ onBack }: { onBack: () => void }) {
   return (
-    <Box component="main" sx={{ flexGrow: 1, py: 8, bgcolor: 'rgb(239, 218, 134)' }}>
+    <Box component="main" sx={{ flexGrow: 1, pt: 2, pb: 8, bgcolor: 'rgb(239, 218, 134)' }}>
       <Container maxWidth="md">
-        <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mb: 4 }}>
-          Back
-        </Button>
+        <IconButton onClick={onBack} sx={{ mb: 2 }} aria-label="Back"><ArrowBackIcon /></IconButton>
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700} sx={{ color: 'rgb(205, 79, 65)' }}>
           Screenplays
         </Typography>
