@@ -202,12 +202,12 @@ function MainContent({ onNav }: { onNav: (page: Page) => void }) {
         })}
       </Box>
 
-      <Box sx={{ position: 'absolute', zIndex: 10, top: '10%', left: { xs: '5%', sm: 0 }, right: { xs: '5%', sm: 0 }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-        <Box sx={{ position: 'relative', display: 'inline-block' }}>
-          <Typography sx={{ position: 'absolute', top: '0.08em', left: '0.08em', width: '100%', fontSize: '9vw', fontWeight: 600, color: 'rgb(209, 116, 30)', textAlign: 'center', whiteSpace: { xs: 'normal', sm: 'nowrap' }, userSelect: 'none' }}>
+      <Box sx={{ position: 'absolute', zIndex: 10, top: '10%', left: { xs: '5%', sm: 0 }, right: { xs: '5%', sm: 0 }, display: 'flex', flexDirection: 'column', alignItems: { xs: 'stretch', sm: 'center' }, gap: 3 }}>
+        <Box sx={{ position: 'relative', display: { xs: 'block', sm: 'inline-block' }, width: { xs: '95%', sm: 'auto' } }}>
+          <Typography sx={{ position: 'absolute', top: '0.08em', left: '0.08em', width: '100%', fontSize: { xs: '10vw', sm: '9vw' }, fontWeight: 600, color: 'rgb(209, 116, 30)', textAlign: 'center', whiteSpace: { xs: 'normal', sm: 'nowrap' }, userSelect: 'none' }}>
             Louis A. Woodley
           </Typography>
-          <Typography sx={{ position: 'relative', fontSize: '9vw', fontWeight: 600, color: 'rgb(238, 187, 39)', textAlign: 'center', whiteSpace: { xs: 'normal', sm: 'nowrap' } }}>
+          <Typography sx={{ position: 'relative', fontSize: { xs: '10vw', sm: '9vw' }, fontWeight: 600, color: 'rgb(238, 187, 39)', textAlign: 'center', whiteSpace: { xs: 'normal', sm: 'nowrap' } }}>
             Louis A. Woodley
           </Typography>
         </Box>
