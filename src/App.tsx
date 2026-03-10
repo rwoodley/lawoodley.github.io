@@ -632,7 +632,7 @@ function ArtPage({ onBack }: { onBack: () => void }) {
           The Nrplings
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          Starting when I was five years old, I began creating these fictional animals — the Nrplings. Over the years, each creature grew its own identity, habitat, and role in a wider ecosystem. The project eventually became the basis for a TikTok series exploring themes of biology, ecology, and the natural world through imaginative creature design.
+          When I was five years old, I began creating and “documenting” fictional animals known as the Nrplings. They started as just fantasy creatures, but over time I began to incorporate real biology and ecology into their designs. Now, the Nrplings are a project which combines imaginative worldbuilding and creature design with science and evolutionary biology. Each of the over 900 Nrplings has its own habitat, hunting/foraging strategies, and role in a larger ecosystem. Check out some examples of the Nrplings below!
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1 }}>
           {NRPLIGNS.map((name, index) => (
