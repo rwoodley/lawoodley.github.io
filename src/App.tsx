@@ -348,6 +348,7 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
           />
           {(poster?.title || poster?.text) && (
             <Box
+              onClick={onClose}
               sx={{
                 px: 2,
                 py: 1,
@@ -355,6 +356,7 @@ function PosterModal({ poster, onClose, onPrev, onNext }: {
                 borderRadius: 1,
                 maxWidth: { xs: 600, sm: '30vw' },
                 alignSelf: { xs: 'auto', sm: 'center' },
+                cursor: 'pointer',
               }}
             >
               {poster.title && (
